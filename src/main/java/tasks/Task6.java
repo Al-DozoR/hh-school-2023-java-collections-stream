@@ -22,11 +22,16 @@ public class Task6 {
   public static Set<String> getPersonDescriptions(Collection<Person> persons,
                                                   Map<Integer, Set<Integer>> personAreaIds,
                                                   Collection<Area> areas) {
+    Map<Integer, Area> areaMap = areas.stream()
+        .collect(Collectors.toMap(Area::getId, area -> area));
+
     return persons.stream()
         .flatMap(person -> personAreaIds.getOrDefault(person.getId(), Collections.emptySet()).stream()
-            .flatMap(regionId -> areas.stream()
-                .filter(area -> Objects.equals(area.getId(), regionId))
-                .map(area -> person.getFirstName() + " - " + area.getName())))
+            .map(regionId -> {
+              Area area = areaMap.get(regionId);
+              return area != null ? person.getFirstName() + " - " + area.getName() : null;
+            })
+            .filter(Objects::nonNull))
         .collect(Collectors.toSet());
   }
 }

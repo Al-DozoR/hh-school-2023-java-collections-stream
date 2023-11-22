@@ -1,6 +1,7 @@
 package tasks;
 
 import common.Person;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -15,7 +16,7 @@ import java.util.stream.Stream;
 public class Task8 {
 
   public List<String> getFirstNames(List<Person> persons) {
-    if (persons == null || persons.isEmpty()) {
+    if (persons == null) {
       return Collections.emptyList();
     }
 
@@ -26,10 +27,6 @@ public class Task8 {
   }
 
   public Set<String> getUniqueFirstNames(List<Person> persons) {
-    if (persons == null || persons.isEmpty()) {
-      return Collections.emptySet();
-    }
-
     return new HashSet<>(getFirstNames(persons));
   }
 
@@ -37,12 +34,12 @@ public class Task8 {
     return Optional.ofNullable(person)
         .map(p -> Stream.of(p.getSecondName(), p.getFirstName(), p.getMiddleName())
             .filter(Objects::nonNull)
-            .collect(Collectors.joining()))
+            .collect(Collectors.joining(" ")))
         .orElse("");
   }
 
   public Map<Integer, String> getPersonFullNames(Collection<Person> persons) {
-    if (persons == null || persons.isEmpty()) {
+    if (persons == null) {
       return Collections.emptyMap();
     }
 
@@ -59,8 +56,7 @@ public class Task8 {
       return false;
     }
 
-    return persons1.stream()
-        .anyMatch(persons2::contains);
+    return !Collections.disjoint(persons1, persons2);
   }
 
   public long countEvenNumbers(Stream<Integer> numbers) {
