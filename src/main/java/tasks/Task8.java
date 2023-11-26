@@ -1,6 +1,7 @@
 package tasks;
 
 import common.Person;
+import lombok.NonNull;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -8,18 +9,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Task8 {
 
-  public List<String> getFirstNames(List<Person> persons) {
-    if (persons == null) {
-      return Collections.emptyList();
-    }
-
+  public List<String> getFirstNames(@NonNull List<Person> persons) {
     return persons.stream()
         .skip(1)
         .map(Person::getFirstName)
@@ -30,12 +26,10 @@ public class Task8 {
     return new HashSet<>(getFirstNames(persons));
   }
 
-  public String getPersonFullName(Person person) {
-    return Optional.ofNullable(person)
-        .map(p -> Stream.of(p.getSecondName(), p.getFirstName(), p.getMiddleName())
-            .filter(Objects::nonNull)
-            .collect(Collectors.joining(" ")))
-        .orElse("");
+  public String getPersonFullName(@NonNull Person person) {
+    return Stream.of(person.getSecondName(), person.getFirstName(), person.getMiddleName())
+        .filter(Objects::nonNull)
+        .collect(Collectors.joining(" "));
   }
 
   public Map<Integer, String> getPersonFullNames(Collection<Person> persons) {
